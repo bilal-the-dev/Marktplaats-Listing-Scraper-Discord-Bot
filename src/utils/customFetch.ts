@@ -41,9 +41,17 @@ const customFetch = async <T>(options: customFetchOptions): Promise<T> => {
 
   const res = await fetch(url, requestOptions);
 
-  const data = await res.json();
+  const contentType = res.headers.get("content-type");
 
-  if (res.status !== 200) {
+  let data;
+
+  if (contentType?.includes("application/json")) {
+    data = await res.json();
+  } else if (contentType?.includes("text/")) {
+    data = await res.text();
+  }
+
+  if (res.status !== 200 || typeof data !== "object") {
     console.log(res);
     console.log(data);
     throw new Error(
