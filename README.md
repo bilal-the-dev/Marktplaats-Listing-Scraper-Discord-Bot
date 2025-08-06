@@ -35,8 +35,8 @@ npm install
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/marktplaats-scraper-bot.git
-cd marktplaats-scraper-bot
+git clone https://github.com/bilal-the-dev/Marktplaats-Listing-Scraper-Discord-Bot bot
+cd bot
 ```
 
 ### 2. Install Dependencies
