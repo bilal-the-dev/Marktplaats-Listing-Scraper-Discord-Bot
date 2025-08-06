@@ -12,6 +12,7 @@ export default {
 
     upsertMonitorConfig.run({ searchText });
 
+    interaction.client.shouldStopScraping = false;
     await interaction.reply(`Search text now is \`${searchText}\`!`);
   },
 } satisfies extendedAPICommand;

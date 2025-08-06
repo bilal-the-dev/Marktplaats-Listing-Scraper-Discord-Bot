@@ -18,6 +18,8 @@ export const scraperAndProcessListings = async (
   client: Client
 ): Promise<void> => {
   try {
+    if (client.shouldStopScraping) return console.log("Stopped scraping!");
+
     console.log("Starting to scrape!");
 
     const monitor = getMonitorConfig.get({});

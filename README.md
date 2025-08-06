@@ -90,6 +90,16 @@ Example:
 /view_search_bar
 ```
 
+#### 🔍 `/stop`
+
+Bot will stop scraping. Run edit command to restart
+
+Example:
+
+```
+/stop
+```
+
 ---
 
 ### 5. Run the Bot
