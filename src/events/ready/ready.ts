@@ -3,6 +3,7 @@ import { Client } from "discord.js";
 import registerAndAttachCommandsOnClient from "../../utils/registrars/registerCommands.js";
 import { CronJob } from "cron";
 import { scraperAndProcessListings } from "../../utils/scraper.js";
+import { setTimeout } from "node:timers/promises";
 
 export default async (client: Client<true>) => {
   console.log(`${client.user.username} (${client.user.id}) is ready 🐬`);
@@ -10,5 +11,6 @@ export default async (client: Client<true>) => {
 
   while (true) {
     await scraperAndProcessListings(client);
+    await setTimeout(1000 * 5);
   }
 };
