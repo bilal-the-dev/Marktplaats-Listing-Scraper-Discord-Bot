@@ -4,7 +4,7 @@
 
 This bot scrapes new listings from **Marktplaats.nl** and posts them in a designated discord channel. It's scalable and highly configurable, using a simple search bar to modify text that the bot uses for searching listings. The bot automatically posts new listings based on the search criteria and offers real-time updates via logs.
 
-![sample](https://github.com/bilal-the-dev/[reponame]/blob/main/click.PNG)
+![sample](https://github.com/bilal-the-dev/Marktplaats-Listing-Scraper-Discord-Bot/blob/main/click.PNG)
 
 It uses the api of marktplaats that their client uses.
 
