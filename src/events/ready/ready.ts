@@ -8,11 +8,7 @@ export default async (client: Client<true>) => {
   console.log(`${client.user.username} (${client.user.id}) is ready 🐬`);
   await registerAndAttachCommandsOnClient(client);
 
-  CronJob.from({
-    cronTime: "*/10 * * * * *",
-    onTick: function () {
-      scraperAndProcessListings(client);
-    },
-    start: true,
-  });
+  while (true) {
+    await scraperAndProcessListings(client);
+  }
 };

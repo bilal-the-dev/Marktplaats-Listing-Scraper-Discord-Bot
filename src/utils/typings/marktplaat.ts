@@ -1,5 +1,7 @@
 export interface MarktplaatsListingsResponse {
   listings: MarktplaatsListing[];
+  totalResultCount: number;
+  maxAllowedPageNumber: number;
 }
 
 export interface MarktplaatsListing {

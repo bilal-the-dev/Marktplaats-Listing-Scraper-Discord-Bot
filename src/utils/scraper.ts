@@ -4,7 +4,11 @@ import { createErrorEmbed, createListingEmbed } from "./components.js";
 import customFetch from "./customFetch.js";
 import { sendInChannel } from "./send.js";
 
-import { MarktplaatsListingsResponse } from "./typings/marktplaat.js";
+import {
+  MarktplaatsListing,
+  MarktplaatsListingsResponse,
+} from "./typings/marktplaat.js";
+import { genApiURL } from "./misc.js";
 
 let cachedListingIds: Array<string> = [];
 const isDevelopment = process.env.NODE_ENV === "development";
@@ -29,11 +33,35 @@ export const scraperAndProcessListings = async (
 
     prevSearchText = monitor.searchText;
 
-    const path = `/lrp/api/search?attributesById[]=0&attributesByKey[]=offeredSince%3AVandaag&limit=30&offset=0&query=${monitor.searchText}&searchInTitleAndDescription=true&viewOptions=list-view`;
+    const path = genApiURL(monitor.searchText);
 
     const data = await customFetch<MarktplaatsListingsResponse>({ path });
 
-    const fetchedListings = data.listings.map((l) => l);
+    // We gonna loop and check for more pages
+    const fetchedListings: MarktplaatsListing[] = data.listings.map((l) => l);
+
+    const pages = data.maxAllowedPageNumber - 1; // minus the current page we fetched
+
+    if (pages > 0) {
+      // more page exist, fetch them!
+
+      const urls = Array(pages)
+        .fill(0)
+        .map((_, i) => genApiURL(monitor.searchText, (i + 1) * 100));
+
+      console.log(urls);
+
+      const promises = urls.map(async (url) => {
+        const data = await customFetch<MarktplaatsListingsResponse>({
+          path: url,
+        }).catch(console.error);
+        return data ? data.listings : [];
+      });
+
+      const result = await Promise.all(promises);
+
+      result.map((r) => fetchedListings.push(...r));
+    }
 
     console.log(`Fetched ${fetchedListings.length} listings!`);
 
