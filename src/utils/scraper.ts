@@ -96,7 +96,7 @@ export const scraperAndProcessListings = async (
     // some error occured, while fetching or anything
     // we'll send logs on discord
 
-    console.log(error);
+    console.error(error);
 
     if (error instanceof Error) {
       const embed = createErrorEmbed(error);
