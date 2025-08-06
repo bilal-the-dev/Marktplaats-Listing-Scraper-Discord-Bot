@@ -1,0 +1,53 @@
+import { EmbedBuilder } from "discord.js";
+import { MarktplaatsListing } from "./typings/marktplaat.js";
+
+export function createListingEmbed(listing: MarktplaatsListing): EmbedBuilder {
+  const {
+    title,
+    description,
+    vipUrl,
+    priceInfo,
+    pictures,
+    location,
+    imageUrls,
+  } = listing;
+
+  const url = `${process.env.MARKTPLAATS_BASE_URL}${vipUrl}`;
+  const image = pictures?.[0]?.largeUrl ?? imageUrls[0] ?? null;
+  const city = location?.cityName ?? "Unknown";
+  const price = (priceInfo.priceCents / 100).toLocaleString("nl-NL", {
+    style: "currency",
+    currency: "EUR",
+    maximumFractionDigits: 2,
+  });
+
+  return new EmbedBuilder()
+    .setTitle(title)
+    .setURL(url)
+    .setDescription(`${description}`)
+    .setColor(0xffa500)
+    .setImage(image)
+    .addFields([
+      {
+        name: "💰 Price",
+        value: priceInfo.priceType === "FAST_BID" ? "Bieden" : price,
+        inline: true,
+      },
+      {
+        name: "📍 Location",
+        value: city,
+        inline: true,
+      },
+    ])
+    .setTimestamp();
+}
+
+export function createErrorEmbed(error: Error): EmbedBuilder {
+  return new EmbedBuilder()
+    .setTitle(`Error occured!`)
+    .setDescription(error.message)
+    .setColor("Red")
+
+    .setFooter({ text: "Marktplaats Scraper" })
+    .setTimestamp();
+}

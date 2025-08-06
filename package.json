@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run build && node --env-file=.env dist/index.js",
+    "test": "npm run build && node --env-file=.env dist/test/fetch.js",
     "dev": "tsc-watch --onSuccess \"node --env-file=.env ./dist/index.js\"",
     "build": "rimraf dist && tsc"
   },
@@ -22,6 +23,7 @@
   },
   "dependencies": {
     "better-sqlite3": "^12.2.0",
+    "cron": "^4.3.3",
     "discord.js": "^14.18.0"
   }
 }
