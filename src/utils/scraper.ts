@@ -3,6 +3,7 @@ import { getMonitorConfig } from "../database/queries.js";
 import { createErrorEmbed, createListingEmbed } from "./components.js";
 import customFetch from "./customFetch.js";
 import { sendInChannel } from "./send.js";
+import { CronJob } from "cron";
 
 import {
   MarktplaatsListing,
@@ -13,6 +14,17 @@ import { genApiURL } from "./misc.js";
 let cachedListingIds: Array<string> = [];
 const isDevelopment = process.env.NODE_ENV === "development";
 let prevSearchText: string = "";
+
+CronJob.from({
+  cronTime: "0 1 0 * * *",
+  start: true,
+  onTick: () => {
+    console.log("Refreshing Cache!!");
+
+    cachedListingIds = [];
+  },
+  timeZone: "Europe/Amsterdam",
+});
 
 export const scraperAndProcessListings = async (
   client: Client
@@ -53,16 +65,15 @@ export const scraperAndProcessListings = async (
 
       console.log(urls);
 
-      const promises = urls.map(async (url) => {
+      for (const url of urls) {
         const data = await customFetch<MarktplaatsListingsResponse>({
           path: url,
         }).catch(console.error);
-        return data ? data.listings : [];
-      });
 
-      const result = await Promise.all(promises);
+        const listings = data ? data.listings : [];
 
-      result.map((r) => fetchedListings.push(...r));
+        fetchedListings.push(...listings);
+      }
     }
 
     console.log(`Fetched ${fetchedListings.length} listings!`);

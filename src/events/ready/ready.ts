@@ -1,7 +1,6 @@
 import { Client } from "discord.js";
 
 import registerAndAttachCommandsOnClient from "../../utils/registrars/registerCommands.js";
-import { CronJob } from "cron";
 import { scraperAndProcessListings } from "../../utils/scraper.js";
 import { setTimeout } from "node:timers/promises";
 
