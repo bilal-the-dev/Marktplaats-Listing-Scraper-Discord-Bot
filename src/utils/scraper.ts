@@ -10,6 +10,7 @@ import {
   MarktplaatsListingsResponse,
 } from "./typings/marktplaat.js";
 import { genApiURL } from "./misc.js";
+import { setTimeout } from "node:timers/promises";
 
 let cachedListingIds: Array<string> = [];
 const isDevelopment = process.env.NODE_ENV === "development";
@@ -75,6 +76,8 @@ export const scraperAndProcessListings = async (
         const listings = data ? data.listings : [];
 
         fetchedListings.push(...listings);
+
+        await setTimeout(1000 * 3);
       }
     }
 
