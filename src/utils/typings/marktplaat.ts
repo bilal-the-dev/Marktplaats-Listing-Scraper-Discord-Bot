@@ -24,7 +24,7 @@ export interface MarktplaatsListing {
     longitude: number;
   };
   date: string;
-  imageUrls: string[];
+  imageUrls?: string[];
   sellerInformation: {
     sellerId: number;
     sellerName: string;

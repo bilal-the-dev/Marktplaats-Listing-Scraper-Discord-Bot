@@ -29,7 +29,7 @@ export const scraperAndProcessListings = async (
 
     prevSearchText = monitor.searchText;
 
-    const path = `/lrp/api/search?attributesById[]=0&attributesByKey[]=offeredSince%3AVandaag&limit=30&offset=0&query=${monitor.searchText}&searchInTitleAndDescription=true&viewOptions=list-view`;
+    const path = `/lrp/api/search?attributesById[]=0&attributesByKey[]=offeredSince%3AVandaag&limit=100&sortBy=SORT_INDEX&sortOrder=DECREASING&offset=0&query=${monitor.searchText}&searchInTitleAndDescription=true&viewOptions=list-view`;
 
     const data = await customFetch<MarktplaatsListingsResponse>({ path });
 

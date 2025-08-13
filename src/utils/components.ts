@@ -9,11 +9,12 @@ export function createListingEmbed(listing: MarktplaatsListing): EmbedBuilder {
     priceInfo,
     pictures,
     location,
+    sellerInformation,
     imageUrls,
   } = listing;
 
   const url = `${process.env.MARKTPLAATS_BASE_URL}${vipUrl}`;
-  const image = pictures?.[0]?.largeUrl ?? imageUrls[0] ?? null;
+  const image = pictures?.[0]?.largeUrl ?? imageUrls?.[0] ?? null;
   const city = location?.cityName ?? "Unknown";
   const price = (priceInfo.priceCents / 100).toLocaleString("nl-NL", {
     style: "currency",
@@ -36,6 +37,11 @@ export function createListingEmbed(listing: MarktplaatsListing): EmbedBuilder {
       {
         name: "📍 Location",
         value: city,
+        inline: true,
+      },
+      {
+        name: "👨‍🍳 Seller",
+        value: sellerInformation.sellerName,
         inline: true,
       },
     ])
