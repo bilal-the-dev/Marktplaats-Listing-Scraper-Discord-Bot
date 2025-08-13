@@ -32,7 +32,7 @@ export const scraperAndProcessListings = async (
   client: Client
 ): Promise<void> => {
   try {
-    if (client.shouldStopScraping) return;
+    if (client.shouldStopScraping) return await setTimeout(1000 * 60 * 1);
 
     console.log("Starting to scrape!");
 
@@ -102,7 +102,7 @@ export const scraperAndProcessListings = async (
         : newListings; // just in dev, do first 5 on startup
 
     for (const newListing of listingsToMapOver) {
-      if (startedAt + 1000 * 60 * 5 < Date.now()) {
+      if (startedAt + 1000 * 60 * 4 < Date.now()) {
         const embed = createListingEmbed(newListing);
 
         await sendInChannel(client, embed, process.env.LISTING_CHANNEL_ID);
