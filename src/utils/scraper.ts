@@ -14,6 +14,7 @@ import { genApiURL } from "./misc.js";
 let cachedListingIds: Array<string> = [];
 const isDevelopment = process.env.NODE_ENV === "development";
 let prevSearchText: string = "";
+const startedAt = Date.now();
 
 CronJob.from({
   cronTime: "0 1 0 * * *",
@@ -99,7 +100,8 @@ export const scraperAndProcessListings = async (
     for (const newListing of listingsToMapOver) {
       const embed = createListingEmbed(newListing);
 
-      await sendInChannel(client, embed, process.env.LISTING_CHANNEL_ID);
+      if (startedAt + 1000 * 60 * 5 < Date.now())
+        await sendInChannel(client, embed, process.env.LISTING_CHANNEL_ID);
 
       cachedListingIds.push(newListing.itemId); // add in cache after processing
     }
