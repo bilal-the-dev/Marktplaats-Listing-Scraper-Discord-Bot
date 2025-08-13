@@ -98,10 +98,11 @@ export const scraperAndProcessListings = async (
         : newListings; // just in dev, do first 5 on startup
 
     for (const newListing of listingsToMapOver) {
-      const embed = createListingEmbed(newListing);
+      if (startedAt + 1000 * 60 * 5 < Date.now()) {
+        const embed = createListingEmbed(newListing);
 
-      if (startedAt + 1000 * 60 * 5 < Date.now())
         await sendInChannel(client, embed, process.env.LISTING_CHANNEL_ID);
+      }
 
       cachedListingIds.push(newListing.itemId); // add in cache after processing
     }
