@@ -14,7 +14,7 @@ import { genApiURL } from "./misc.js";
 let cachedListingIds: Array<string> = [];
 const isDevelopment = process.env.NODE_ENV === "development";
 let prevSearchText: string = "";
-const startedAt = Date.now();
+let startedAt = Date.now();
 
 CronJob.from({
   cronTime: "0 1 0 * * *",
@@ -43,6 +43,7 @@ export const scraperAndProcessListings = async (
     if (prevSearchText && prevSearchText !== monitor.searchText) {
       cachedListingIds = [];
       prevSearchText = monitor.searchText;
+      startedAt = Date.now();
       return console.log("Monitor text changed so flushed out old cached data");
     }
 
