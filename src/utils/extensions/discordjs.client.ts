@@ -4,5 +4,6 @@ import { extendedAPICommand } from "../typings/types.js";
 declare module "discord.js" {
   interface Client {
     commands: Array<extendedAPICommand>;
+    shouldStopScraping?: Boolean;
   }
 }

@@ -5,15 +5,29 @@ import customFetch from "./customFetch.js";
 import { sendInChannel } from "./send.js";
 
 import { MarktplaatsListingsResponse } from "./typings/marktplaat.js";
+import { CronJob } from "cron";
 
 let cachedListingIds: Array<string> = [];
 const isDevelopment = process.env.NODE_ENV === "development";
 let prevSearchText: string = "";
 
+CronJob.from({
+  cronTime: "0 1 0 * * *",
+  start: true,
+  onTick: () => {
+    console.log("Refreshing Cache!!");
+
+    cachedListingIds = [];
+  },
+  timeZone: "Europe/Amsterdam",
+});
+
 export const scraperAndProcessListings = async (
   client: Client
 ): Promise<void> => {
   try {
+    if (client.shouldStopScraping) return;
+
     console.log("Starting to scrape!");
 
     const monitor = getMonitorConfig.get({});
