@@ -81,6 +81,8 @@ export const scraperAndProcessListings = async (
       }
     }
 
+    if (pages === 0) await setTimeout(1000 * 5); // if one page, then wait 5 secs before making another request, had to put this here only
+
     console.log(`Fetched ${fetchedListings.length} listings!`);
 
     // if development, it wont add to cache
@@ -102,7 +104,7 @@ export const scraperAndProcessListings = async (
         : newListings; // just in dev, do first 5 on startup
 
     for (const newListing of listingsToMapOver) {
-      if (startedAt + 1000 * 60 * 4 < Date.now()) {
+      if (startedAt + 1000 * 60 * 1 < Date.now()) {
         const embed = createListingEmbed(newListing);
 
         await sendInChannel(client, embed, process.env.LISTING_CHANNEL_ID);

@@ -8,6 +8,7 @@ export default async (client: Client<true>) => {
   await registerAndAttachCommandsOnClient(client);
 
   while (true) {
+    // if single page, then it just keeps making request after milliseconds man because of no delay!!!
     await scraperAndProcessListings(client);
   }
 };
