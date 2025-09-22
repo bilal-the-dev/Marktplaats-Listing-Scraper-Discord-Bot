@@ -16,14 +16,16 @@ export function createListingEmbed(listing: MarktplaatsListing): EmbedBuilder {
   const url = `${process.env.MARKTPLAATS_BASE_URL}${vipUrl}`;
   const image = pictures?.[0]?.largeUrl ?? imageUrls?.[0] ?? null;
   const city = location?.cityName ?? "Unknown";
-  const price = (priceInfo.priceCents / 100).toLocaleString("nl-NL", {
+  const formattedPrice = (priceInfo.priceCents / 100).toLocaleString("nl-NL", {
     style: "currency",
     currency: "EUR",
     maximumFractionDigits: 2,
   });
 
+  const price = priceInfo.priceType === "FAST_BID" ? "Bieden" : formattedPrice;
+
   return new EmbedBuilder()
-    .setTitle(title)
+    .setTitle(`${price} | ${title}`)
     .setURL(url)
     .setDescription(`${description}`)
     .setColor(0xffa500)
@@ -31,7 +33,7 @@ export function createListingEmbed(listing: MarktplaatsListing): EmbedBuilder {
     .addFields([
       {
         name: "💰 Price",
-        value: priceInfo.priceType === "FAST_BID" ? "Bieden" : price,
+        value: price,
         inline: true,
       },
       {
